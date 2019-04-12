@@ -1,0 +1,9 @@
+
+- name: --print out operating system --
+  debug: var=ansible_distribution
+  tags: [verify-server]      
+  
+- name: -- ping server --
+  ping: 
+  tags: [verify-server]      
+

@@ -1,0 +1,25 @@
+- hosts: "{{ variable_host | default('localhost') }}"
+  remote_user: "{{ r_user }}"
+  become: yes
+  tasks:
+  - name: Add user to the docker group
+    user:
+      name: "{{item.user_name}}"
+      groups: docker
+      shell: "/bin/bash"
+      append: yes
+      home: "/home/{{item.user_name}}" 
+    with_items: &my_items
+      - user_name: kube
+        user_description: kube user
+        user_id: 2000
+      - user_name: jenkins
+        user_description: jenkins user
+        user_id: 2001
+    become: yes  
+    register: ps
+  - debug: var=ps.stdout_lines      
+ 
+
+
+

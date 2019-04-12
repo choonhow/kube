@@ -1,0 +1,5 @@
+127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
+192.168.10.80 k8s-m.vg k8s-m
+192.168.10.81 k8s-n1.vg k8s-n1
+192.168.10.82 k8s-n2.vg k8s-n2
+192.168.10.88 jenkins.vg jenkins

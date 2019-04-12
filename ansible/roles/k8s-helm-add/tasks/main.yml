@@ -1,0 +1,19 @@
+- name: -- helm install nginx-ingress  -- 
+  become:  false
+  shell:   helm install stable/nginx-ingress --namespace kube-system --name nginx-ingress --version=0.23.0 --set controller.kind=DaemonSet --set controller.daemonset.useHostPort=true --set controller.nodeSelector.node=edge --set controller.service.type=ClusterIP
+  register: ps
+- debug: var=ps.stdout_lines
+
+- name: -- helm install dashboard  -- 
+  become:  false
+  #shell:   helm install stable/kubernetes-dashboard --name kubernetes-dashboard --namespace kube-system --set ingress.enabled=true,rbac.clusterAdminRole=true
+  shell:   helm install stable/kubernetes-dashboard --name kubernetes-dashboard --namespace kube-system --set rbac.clusterAdminRole=true
+  register: ps
+- debug: var=ps.stdout_lines
+
+- name: -- check dashboard token value  --
+  shell: kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-dashboard | awk '{print $1}')
+  become: false # because you're using sudo
+  ignore_errors: yes
+  register: ps
+- debug: var=ps.stdout_lines

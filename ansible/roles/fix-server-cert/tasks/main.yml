@@ -1,0 +1,10 @@
+
+- name: Fix private keys permissions
+  file: 
+    path: keys/ 
+    owner: "{{ local_user }}" 
+    group: "{{ local_group }}"
+    mode: 0700
+    state: directory
+    recurse: yes
+  

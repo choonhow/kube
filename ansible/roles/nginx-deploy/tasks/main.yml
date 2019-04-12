@@ -1,0 +1,31 @@
+- name: -- remove project directory  --
+  file:
+    path: "{{ dest_proj_path }}"
+    state: absent
+  tags: [project-deploy] 
+  
+- name: -- create project directory  --
+  file:
+    path: "{{ dest_proj_path }}"
+    state: directory
+    owner: "{{ remote_user }}"
+    group: "{{ remote_group }}"    
+  tags: [project-deploy] 
+  
+# Unarchive a file that is already on the remote machine
+- name: -- untar at remote --
+  unarchive: 
+    src: "{{ package_name }}"
+    dest: "{{ dest_proj_path }}"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_group }}"
+    remote_src: no
+
+- name: -- change ownership  --
+  file:
+    dest: "{{ dest_proj_home_path }}"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_group }}"
+    recurse: yes
+  tags: [project-deploy]   
+

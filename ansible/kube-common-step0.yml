@@ -1,0 +1,10 @@
+###################################################
+## create kube & jenkins user with docker,sudo group
+###################################################
+
+- hosts: "{{ variable_host | default('localhost') }}"
+  user: "{{ r_user }}"
+  become: true
+
+  roles:
+    - docker-pre

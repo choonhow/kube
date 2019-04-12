@@ -1,0 +1,35 @@
+- name: download helm install script
+  get_url:
+    url: https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get
+    dest: ./install-helm.sh
+    mode: 0755    
+
+- name: -- install helm -- 
+  become:  false
+  shell:   ./install-helm.sh
+  register: ps
+- debug: var=ps.stdout_lines
+
+- name: -- Create the tiller serviceaccount -- 
+  become:  false
+  shell:   kubectl -n kube-system create serviceaccount tiller
+  register: ps
+- debug: var=ps.stdout_lines
+
+- name: -- bind the tiller serviceaccount to the cluster-admin role -- 
+  become:  false
+  shell:   kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+  register: ps
+- debug: var=ps.stdout_lines
+
+- name: -- helm init -- 
+  become:  false
+  shell:   helm init --service-account tiller
+  register: ps
+- debug: var=ps.stdout_lines
+
+- name: -- label k8s-n1 -- 
+  become:  false
+  shell:   kubectl label node k8s-n1 node=edge
+  register: ps
+- debug: var=ps.stdout_lines

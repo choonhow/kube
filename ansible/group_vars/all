@@ -1,0 +1,25 @@
+home_path : "/home/{{ r_user }}"
+source_project_path: "{{ playbook_dir }}/.."
+dest_proj_home_path: "{{ home_path }}/project"
+dest_proj_path: "{{ dest_proj_home_path }}/kube"
+package_name : "{{ source_project_path }}/package.gz"
+r_user : kube
+r_group : kube
+local_user : jenkins
+local_group : jenkins
+
+kubernetes_master_ip: "192.168.10.80"
+pod_network_cidr: "192.168.0.0/16"
+kubeadm_token:        "9e3u9a.f9ms7dra3ixrw76j"
+
+k8s_ver: 1.14.1
+k8s_install_ver: '{{k8s_ver}}-00'
+
+docker_ver: 18.09.1
+docker_install_ver: '5:{{docker_ver}}~3-0~ubuntu-xenial'
+
+##18.06.1~ce~3-0~ubuntu
+##5:18.09.1~3-0~ubuntu-xenial
+
+### check avaible version for k8s
+###https://packages.cloud.google.com/apt/dists/kubernetes-xenial/main/binary-amd64/Packages

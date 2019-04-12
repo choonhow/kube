@@ -1,0 +1,63 @@
+- name: -- apt-transport-https present -- 
+  apt:
+    name: apt-transport-https
+    state: present
+    force: yes
+  tags: [k8s-common]
+  
+- name: -- Add an Apt signing key to a specific keyring file -- 
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    
+- name: Add kubernete repository and update apt cache
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    update_cache: yes
+    state: present
+  tags: [k8s-common]
+ 
+- name: -- kubectl, kubeadm, kubectl, kubernetes-cni is present -- 
+  apt:
+    name: '{{ packages }}'
+    #name: ['kubelet','kubeadm','kubectl','kubernetes-cni']
+    state: present
+    force: yes
+    update_cache: yes
+  vars:
+    packages:
+      - 'kubelet={{ k8s_install_ver }}'
+      - 'kubeadm={{ k8s_install_ver }}'
+      - 'kubectl={{ k8s_install_ver }}'
+      #- 'kubernetes-cni'
+  tags: [k8s-common]
+##kubernetes-cni didn't follow the same version as kubelet, kubeadm, kubectl
+
+- name: -- Enable the kubelet daemon in systemd -- 
+  systemd:
+    name: kubelet
+    enabled: yes
+    masked: no
+  tags: [k8s-common]
+  
+- name: -- Start the kubelet daemon -- 
+  systemd:
+    name: kubelet
+    state: started
+    masked: no  
+  tags: [k8s-common]
+  
+- name: -- Remove swapfile from /etc/fstab -- 
+  mount:
+    name: none
+    fstype: swap
+    state: absent
+    path: /dev/mapper/vagrant--vg-swap_1
+    opts: sw
+    dump: 0
+    passno: 0
+  tags: [k8s-common]
+  
+- name: -- Disable swap -- 
+  command: swapoff -a
+  when: ansible_swaptotal_mb > 0
+  tags: [k8s-common]  

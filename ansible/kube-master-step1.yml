@@ -1,0 +1,9 @@
+- hosts: "{{ variable_host | default('localhost') }}"
+  user: "{{ r_user }}"
+  become: true
+
+  roles:
+    - verify-server
+    - docker-common
+    - k8s-common    
+    - k8s-master

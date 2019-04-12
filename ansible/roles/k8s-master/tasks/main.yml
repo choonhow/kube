@@ -1,0 +1,91 @@
+- name: -- Initialise Kubernetes Cluster --
+  become:  true
+  shell:   kubeadm init --kubernetes-version={{ k8s_ver }} --token={{ kubeadm_token }} --apiserver-advertise-address={{ kubernetes_master_ip }} --pod-network-cidr={{ pod_network_cidr }}
+  register: ps
+- debug: var=ps.stdout_lines
+  
+- name: -- make .kube directory  --
+  file:
+    path: "{{ home_path }}/.kube"
+    state: directory
+    owner: "{{ r_user }}"
+    group: "{{ r_group }}"
+  tags: [create-package]
+  
+- name: -- copy admin.conf --
+  become: yes
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ home_path }}/.kube/config"
+    owner: "{{ r_user }}"
+    group: "{{ r_group }}"
+    mode: 0644  
+    
+########################################################
+##  cannot get calico to work properly.               ## 
+##  keep through apiserver timeout,                   ##
+##  helm, nginx-ingress also not working with calico  ##
+########################################################   
+#- name: -- Deploy Container Network Interface (CNI) - calico rbac -- 
+#  become:  false
+#  shell:   kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml
+#
+#- name: -- Deploy Container Network Interface (CNI) - calico  -- 
+#  become:  false
+#  shell:   kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml
+  
+  
+########################################################
+## not working, through error                         ##
+########################################################
+# - name: -- Deploy Container Network Interface (CNI) - calico  -- 
+  # become:  false  
+  # shell:   kubectl create -f https://docs.projectcalico.org/v3.4/getting-started/kubernetes/installation/hosted/calico.yaml
+  # register: ps
+# - debug: var=ps.stdout_lines
+  
+- name: -- Deploy Container Network Interface (CNI) - weave  -- 
+  become:  false
+  shell:   kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+  register: ps
+- debug: var=ps.stdout_lines
+
+########################################################
+##  not doing this as we deploy to client node        ##
+########################################################
+# - name: -- taint master node -- 
+  # become:  false
+  # shell:   kubectl taint nodes --all node-role.kubernetes.io/master-
+  # register: ps
+# - debug: var=ps.stdout_lines
+
+########################################################
+##   manually install dashboard                       ##
+########################################################
+# - name: -- install dashboard  -- 
+  # become:  false
+  # shell:   kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
+  # register: ps
+# - debug: var=ps.stdout_lines
+
+# - name: -- create service account for dashboard -- 
+  # become:  false
+  # shell:   kubectl create serviceaccount my-admin-user -n kube-system
+  # ignore_errors: yes
+  # register: ps
+# - debug: var=ps.stdout_lines
+  
+# - name: -- assign service account for dashboard -- 
+  # become:  false
+  # shell:   kubectl create clusterrolebinding my-admin-user -n kube-system --clusterrole=cluster-admin --serviceaccount=kube-system:my-admin-user
+  # ignore_errors: yes
+  # register: ps
+# - debug: var=ps.stdout_lines
+  
+# - name: -- check dashboard token value  --
+  # shell: kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep my-admin-user | awk '{print $1}')
+  # become: false # because you're using sudo
+  # ignore_errors: yes
+  # register: ps
+# - debug: var=ps.stdout_lines
+  

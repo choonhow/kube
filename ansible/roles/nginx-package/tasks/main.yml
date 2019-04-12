@@ -1,0 +1,18 @@
+
+- name: -- remove old archive file --
+  file:
+    path: "{{ package_name }}"
+    state: absent
+  tags: [create-package] 
+
+- name: -- create archive file  --  
+  archive:
+    path: 
+      - "{{ source_project_path }}/*"
+      - "{{ source_project_path }}/.git/"
+    dest: "{{ package_name }}"
+    format: gz     
+    owner : "{{ local_user }}"
+    group : "{{ local_group }}"
+  tags: [create-package] 
+        
