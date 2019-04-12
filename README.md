@@ -1,10 +1,11 @@
 # Kubernetes
 
 ## 1) Overview
-This project demo how to setup kubernetes with master & client node.  
-Vagrant will provision ubuntu-16 as base. Ansible is used install docker, kubernete, helm etc.  
-It use kubadm & weave for Container Network Interface (CNI).  
-It use helm to install dashboard & nginx-ingress.   
+This project is a multi-node kubernetes setup in windows environment.  
+It uses vagrant to provision ubuntu-16 OS as base.  
+Ansible is used to install docker, kubernete, helm etc.  
+It uses kubadm & weave for Container Network Interface (CNI).  
+It uses helm to install dashboard & nginx-ingress.   
 Once the setup is done, you can access nginx default welcome page from client node.    
 
 ## 2) Prerequisite
