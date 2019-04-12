@@ -1,22 +1,22 @@
-# kube
+# Kubernetes
 
-## 1) General
-This project will demo how to setup kubernete with master+client node  
-Vagrant will provision ubuntu-16 image as base. Ansible is used install docker, kubernete, helm etc.  
-It use kubadm to initialize kubernete. It will setup Container Network Interface (CNI) using weave plugin.  
-It will make use of helm to install dashboard & nginx-ingress  
-Once the setup is done, you have be able to access nginx demo page.  
+## 1) Overview
+This project demo how to setup kubernetes with master & client node.  
+Vagrant will provision ubuntu-16 as base. Ansible is used install docker, kubernete, helm etc.  
+It use kubadm & weave for Container Network Interface (CNI).  
+It use helm to install dashboard & nginx-ingress.   
+Once the setup is done, you can access nginx default welcome page from client node.    
 
 ## 2) Prerequisite
-I am running this project on my notebook with 16 GB RAM. However you can always scale down to single node.
-- 10 GB RAM
-- java 1.8
-- virtualbox 6
-- vagrant 2.2.4
+- I am running this project on my notebook with 16 GB RAM. However you can always scale down to single node.
+  - 8GB RAM above.
+  - java 1.8
+  - virtualbox 6
+  - vagrant 2.2.4
 
 ## 3) Setup master & nodes
-- vagrant will setup 1 master node (k8s-m) 4GB RAM, & 2 client nodes (k8s-n1, k8s-n2) with 2GB RAM
-  run the following command to bring up master & client nodes
+- vagrant will setup 1 master node (k8s-m) 4GB RAM, & 2 client nodes (k8s-n1, k8s-n2) with 2GB RAM.  
+  Run the following command to bring up master & client nodes
 - during the setup, it will install ansible into the vm.
 - it will take a while to download and install the vm.
 
