@@ -1,6 +1,18 @@
-# Kubernetes
+# Kubernetes 
+This project can help you to setup a local kubernetes cluster with 1 or 2 nodes. It runs in multiple vm using vagrant.
 
-## 1) Overview
+Topic
+1) [overview](#1-overview)  
+2) [prequisite](#2-prerequisite)  
+3) [create master & client nodes VM](#3-create-master--client-nodes-VM) 
+4) [setup kube user](#4-setup-kube-users)
+5) [setup master node](#5-setup-master-node)
+6) [setup client node](#6-setup-client-node)
+7) [setup helm](#7-setup-helm)
+8) [install dashboard & nginx-ingress](#8-install-dashboard--nginx-ingress)
+9) [setup simple nginx application with ingress](#9-setup-simple-nginx-application-with-ingress)
+
+## 1) overview
 This project is a multi-node kubernetes setup in windows environment.  
 It uses vagrant to provision ubuntu-16 OS as base.  
 Ansible is used to install docker, kubernete, helm etc.  
@@ -8,14 +20,14 @@ It uses kubadm & weave for Container Network Interface (CNI).
 It uses helm to install dashboard & nginx-ingress.   
 Once the setup is done, you can access nginx default welcome page from client node.    
 
-## 2) Prerequisite
+## 2) prerequisite
 - I am running this project on my notebook with 16 GB RAM. However you can always scale down to single node.
   - 8GB RAM above.
   - java 1.8
   - virtualbox 6
   - vagrant 2.2.4
 
-## 3) Setup master & nodes
+## 3) create master & client nodes VM
 - vagrant will setup 1 master node (k8s-m) 4GB RAM, & 2 client nodes (k8s-n1, k8s-n2) with 2GB RAM.  
   Run the following command to bring up master & client nodes
 - during the setup, it will install ansible into the vm.
