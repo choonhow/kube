@@ -22,11 +22,11 @@ Once the setup is done, you can access nginx default welcome page from client no
 
 ## 2) prerequisite
 - I am running this project on my notebook with 16 GB RAM. However you can always scale down to single node.  
-  You need to install java, virtualbox & vagrant into your hardware.  
+  You need to install java, virtualbox & vagrant into your pc first before you can continue with the following.  
   - 8GB RAM above.
   - java 1.8
-  - virtualbox 6
-  - vagrant 2.2.4
+  - [virtualbox 6](https://www.virtualbox.org/wiki/Downloads)
+  - [vagrant 2.2.4](https://www.vagrantup.com/)
 - Other software & version used
   - docker - 18.09.1
   - kubernete - 1.14.1 
