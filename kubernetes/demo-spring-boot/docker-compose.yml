@@ -1,0 +1,18 @@
+version: '2.0'
+
+services:
+  nginx: 
+    image: customer:0.1
+    container_name: customer_dk_ctn
+      
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "20"    
+
+    ports:
+      - 8080:8080
+    restart: always
+    cpu_shares: 100 #1 core
+    mem_limit: 1G

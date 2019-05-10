@@ -1,0 +1,61 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: demo-nginx-dp
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: demo-nginx-dp
+    spec:
+      containers:
+      - name: demo-nginx-ctn1
+        image: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /etc/nginx
+          name: nginx-conf-dir
+        - mountPath: /etc/ssl
+          name: nginx-ssl-dir
+      volumes:
+      - name: nginx-conf-dir
+        hostPath: 
+          path: /home/kube/kube-proj/kubernetes/demo-nginx/conf/
+          type: Directory
+      - name: nginx-ssl-dir
+        hostPath: 
+          path: /home/kube/kube-proj/kubernetes/demo-nginx/cert/
+          type: Directory
+          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-nginx-svc
+  labels:
+    app: demo-nginx-svc
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    name: http
+  selector:
+    run: demo-nginx-dp
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: demo-nginx-ing
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"    
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: demo-nginx-svc
+          servicePort: 80
