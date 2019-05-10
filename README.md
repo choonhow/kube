@@ -11,6 +11,8 @@ This project can help you to setup a local kubernetes cluster with 1 or 2 nodes.
 7) [setup helm](#7-setup-helm)
 8) [install dashboard & nginx-ingress](#8-install-dashboard--nginx-ingress)
 9) [setup a sample nginx application with ingress](#9-setup-a-sample-nginx-application-with-ingress)
+10) [setup reverse proxy demo](#10-setup-reverse-proxy-demo)
+11) [setup spring root demo](#11-setup-spring-root-demo)
 
 ## 1) overview
 This project is a multi-node kubernetes setup in windows environment.  
@@ -214,3 +216,32 @@ NAME                                     DESIRED   CURRENT   READY   AGE
 replicaset.apps/my-nginx-dp-68c7c95975   1         1         1       63s
 ```
 - access the website throught node ip https://192.168.10.81 and you will see nginx default welcome page.
+- to delete the project
+```
+kube@k8s-m:~/kube-proj/ansible$ kubectl delete -f my-nginx-test.yaml
+```
+
+## 10) setup reverse proxy demo
+```
+kube@k8s-m:~/kube-proj/ansible$ cd /home/kube/kube-proj/kubernetes/demo-nginx
+kube@k8s-m:~/kube-proj/ansible$ kubectl apply -f k8s-demo-nginx.yaml
+```
+  - this demo will use nginx to reverse proxy a sample website (http://www.utar.edu.my)
+  - you need to modify the windows hosts file `C:\Windows\System32\drivers\etc\hosts` with node1 ip 
+    `192.168.10.81  www.utar.edu.my`
+  - when you access the website through browser, it will go through node1 (192.168.10.81) then only go to actual website.
+- to delete the project
+```
+kube@k8s-m:~/kube-proj/ansible$ kubectl delete -f k8s-demo-nginx.yaml
+```
+## 11) setup spring root demo
+```
+kube@k8s-m:~/kube-proj/ansible$ cd /home/kube/kube-proj/kubernetes/demo-spring-boot
+kube@k8s-m:~/kube-proj/ansible$ kubectl apply -f ks8-postgresql.yaml
+kube@k8s-m:~/kube-proj/ansible$ kubectl apply -f k8s-customer.yaml
+```
+  - it will create a postgresql DB in kubernetes.
+  - it will also get the sample docker image (choonhow/customer:0.1) from docker hub and run it in kubernetes environment
+  - try to access the API (192.168.10.81/app/customers) once the container is ready 
+  - you can also access postgresql DB through client. It is expose with external IP at node1 (192.168.10.81:5432)
+    Refer to here on [external IP](https://kubernetes.io/docs/concepts/services-networking/service/#external-ips)
