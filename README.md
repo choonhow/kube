@@ -1,22 +1,39 @@
-# kube
+# Kubernetes 
+This project can help you to setup a local kubernetes cluster with 1 or 2 nodes. It runs in multiple vm using vagrant.
 
-## 1) General
-This project will demo how to setup kubernete with master+client node  
-Vagrant will provision ubuntu-16 image as base. Ansible is used install docker, kubernete, helm etc.  
-It use kubadm to initialize kubernete. It will setup Container Network Interface (CNI) using weave plugin.  
-It will make use of helm to install dashboard & nginx-ingress  
-Once the setup is done, you have be able to access nginx demo page.  
+## 0) Topic
+1) [overview](#1-overview)  
+2) [prequisite](#2-prerequisite)  
+3) [create master & client nodes VM](#3-create-master--client-nodes-VM) 
+4) [setup kube user](#4-setup-kube-users)
+5) [setup master node](#5-setup-master-node)
+6) [setup client node](#6-setup-client-node)
+7) [setup helm](#7-setup-helm)
+8) [install dashboard & nginx-ingress](#8-install-dashboard--nginx-ingress)
+9) [setup a sample nginx application with ingress](#9-setup-a-sample-nginx-application-with-ingress)
 
-## 2) Prerequisite
-I am running this project on my notebook with 16 GB RAM. However you can always scale down to single node.
-- 10 GB RAM
-- java 1.8
-- virtualbox 6
-- vagrant 2.2.4
+## 1) overview
+This project is a multi-node kubernetes setup in windows environment.  
+It uses vagrant to provision ubuntu-16 OS as base.  
+Ansible is used to install docker, kubernete, helm etc.  
+It uses kubadm & weave for Container Network Interface (CNI).  
+It uses helm to install dashboard & nginx-ingress.   
+Once the setup is done, you can access nginx default welcome page from client node.    
 
-## 3) Setup master & nodes
-- vagrant will setup 1 master node (k8s-m) 4GB RAM, & 2 client nodes (k8s-n1, k8s-n2) with 2GB RAM
-  run the following command to bring up master & client nodes
+## 2) prerequisite
+- I am running this project on my notebook with 16 GB RAM. However you can always scale down to single node.  
+  You need to install java, virtualbox & vagrant into your pc first before you can continue with the following.  
+  - 8GB RAM above.
+  - java 1.8
+  - [virtualbox 6](https://www.virtualbox.org/wiki/Downloads)
+  - [vagrant 2.2.4](https://www.vagrantup.com/)
+- Other software & version used
+  - docker - 18.09.1
+  - kubernete - 1.14.1 
+
+## 3) create master & client nodes VM
+- vagrant will setup 1 master node (k8s-m) 4GB RAM, & 2 client nodes (k8s-n1, k8s-n2) with 2GB RAM.  
+  Run the following command to bring up master & client nodes
 - during the setup, it will install ansible into the vm.
 - it will take a while to download and install the vm.
 
@@ -171,7 +188,7 @@ kubernetes-dashboard   NodePort   10.108.75.219   <none>        443:31268/TCP   
 - so you can access dashboard at https://192.168.10.80:31268 using browser.  
   It prompt you to login. Select token to login  
   
-## 9) setup simple nginx application with ingress
+## 9) setup a sample nginx application with ingress
 - goto the kubernete project directory and deploy the applicaiton
 ```
 kube@k8s-m:~/kube-proj/ansible$ cd /home/kube/kube-proj/kubernetes/nginx
