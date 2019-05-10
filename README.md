@@ -12,7 +12,7 @@ This project can help you to setup a local kubernetes cluster with 1 or 2 nodes.
 8) [install dashboard & nginx-ingress](#8-install-dashboard--nginx-ingress)
 9) [setup a sample nginx application with ingress](#9-setup-a-sample-nginx-application-with-ingress)
 10) [setup reverse proxy demo](#10-setup-reverse-proxy-demo)
-11) [setup spring root demo](#11-setup-spring-root-demo)
+11) [setup spring boot demo](#11-setup-spring-boot-demo)
 
 ## 1) overview
 This project is a multi-node kubernetes setup in windows environment.  
@@ -234,7 +234,7 @@ kube@k8s-m:~/kube-proj/ansible$ kubectl apply -f k8s-demo-nginx.yaml
 ```
 kube@k8s-m:~/kube-proj/ansible$ kubectl delete -f k8s-demo-nginx.yaml
 ```
-## 11) setup spring root demo
+## 11) setup spring boot demo
 ```
 kube@k8s-m:~/kube-proj/ansible$ cd /home/kube/kube-proj/kubernetes/demo-spring-boot
 kube@k8s-m:~/kube-proj/ansible$ kubectl apply -f ks8-postgresql.yaml
